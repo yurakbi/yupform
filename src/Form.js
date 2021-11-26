@@ -14,6 +14,22 @@ const MyTextInput = ({label, ...props}) => {
     )
 };
 
+const MyCheckBox = ({children, ...props}) => {
+    const [field, meta] = useField({...props, type: 'checkbox'});
+    return (
+        <>
+            <label className="checkbox">
+                <input type="checkbox" {...props} {...field}/>
+                {children}
+            </label>
+            {meta.touched && meta.error ? (
+                <div className='error'>{meta.error}</div>
+            ) : null}
+            
+        </>
+    )
+};
+
 const CustomForm = () => {
     return (
         <Formik 
@@ -83,14 +99,11 @@ const CustomForm = () => {
                     as="textarea"
                 />
                 <ErrorMessage className='error' name='text' component='div'/>
-                <label className="checkbox">
-                    <Field 
-                        name="terms" 
-                        type="checkbox"
-                        />
-                    Соглашаетесь с политикой конфиденциальности?
-                </label>
-                <ErrorMessage className='error' name='terms' component='div'/>
+                <MyCheckBox
+                    name='terms'
+                > 
+                 Соглашаетесь с политикой конфиденциальности?
+                </MyCheckBox>
                 <button type="submit">Отправить</button>
             </Form>
         </Formik>
